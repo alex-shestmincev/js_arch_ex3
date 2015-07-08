@@ -8,19 +8,16 @@ var StudentListItem = React.createClass({
     this.props.changeStatus(this.props.user, 'removed');
   },
 
+  statusChange: function(event){
+    this.props.changeStatus(this.props.user,event.target.value);
+  },
+
   render: function() {
 
-    var act = '';
     var classValue ='StudentListItem';
     if (this.props.user.status === 'redcard'){
-      act = (
-        <button onClick={this.remove} type="submit">Отчислить</button>
-      );
       classValue  += ' redcard';
     }else if(this.props.user.status === 'removed'){
-      act = (
-        <button onClick={this.redcard} type="submit">Зачислить</button>
-      );
       classValue  += ' removed';
     }
 
@@ -28,7 +25,11 @@ var StudentListItem = React.createClass({
       <ul className={classValue}>
         <li><label>Name:</label> {this.props.user.name}</li>
         <li><label>Phone:</label> {this.props.user.phone}</li>
-        {act}
+        <select value={this.props.user.status} onChange={this.statusChange}>
+          <option value="redcard">redcard</option>
+          <option value="removed">removed</option>
+          <option value="active">active</option>
+        </select>
       </ul>
     );
   }

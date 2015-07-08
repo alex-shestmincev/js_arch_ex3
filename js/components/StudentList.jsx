@@ -1,28 +1,33 @@
+
+
 var StudentList = React.createClass({
 
   getInitialState: function() {
     return {
-      users: [
-        {name: 'Alex', phone: '1111111', status:'redcard'},
-        {name: 'David', phone: '2222222',status:'redcard'},
-        {name: 'Frank', phone: '3333333', status:'removed'},
-        {name: 'John', phone: '111144444111', status:'redcard'},
-      ]
+      users: []
     }
   },
 
   componentWillMount(){
-    var dispatcher = new Dispatcher();
+    Actions.getStudentList(this.loaded);
+  },
+
+  componentDidMount: function(){
+
+  },
+
+  loaded: function(data){
+    this.setState({
+      users: data
+    })
   },
 
   changeStatus: function(user,status){
-    var users = this.state.users;
-    var index = users.indexOf(user);
-
-    users[index].status = status;
-    this.setState({
-      users:users
-    });
+    user.status = status;
+    var self = this;
+    Actions.updateStudent(user, function(){
+      Actions.getStudentList(self.loaded);
+    })
   },
 
   render: function() {
